@@ -2,6 +2,8 @@
 
 A playful, editorial learning platform by Praise James. Learn AI concepts through bite-sized explanations, interactive browser experiments, quizzes, and video lessons.
 
+**Live website:** https://ai-from-scratch-web-sand.vercel.app/
+
 **Status:** First working prototype. Episodes 1–3 are available. Episode 4 is marked *Coming soon*. The AI Bible is intentionally out of scope.
 
 ## Run locally
@@ -21,6 +23,10 @@ To validate a production build:
 npm run lint
 npm run build
 ```
+
+## Live deployment
+
+The production deployment is connected to Vercel. The verified project domain is [ai-from-scratch-web-sand.vercel.app](https://ai-from-scratch-web-sand.vercel.app/). Vercel also lists project-generated aliases; deployment-specific preview URLs may change after each build.
 
 ## Deploy to Vercel
 
