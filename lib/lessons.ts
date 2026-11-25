@@ -50,6 +50,18 @@ export const lessons: Lesson[] = [
   },
   {
     index: 4,
+    slug: "prompt-engineering",
+    eyebrow: "THE PROMPT LAB",
+    title: "Prompt Engineering Explained",
+    description: "Explore zero-shot and few-shot prompting, structured outputs, and a real Python experiment with 50 support tickets.",
+    duration: "14 min video",
+    color: "mint",
+    status: "available",
+    video: "zyeF_r8LdiI",
+    objective: "Design prompts, understand the major prompting techniques, and evaluate model responses.",
+  },
+  {
+    index: 5,
     slug: "neural-networks-backpropagation",
     eyebrow: "NEXT UP",
     title: "Neural networks & backpropagation",
