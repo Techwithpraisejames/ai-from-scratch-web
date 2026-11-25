@@ -4,7 +4,7 @@ A playful, editorial learning platform by Praise James. Learn AI concepts throug
 
 **Live website:** https://ai-from-scratch-for-beginners.vercel.app/
 
-**Status:** First working prototype. Episodes 1–3 are available. Episode 4 is marked *Coming soon*. The AI Bible is intentionally out of scope.
+**Status:** First working prototype. Episodes 1–4 are available. Episode 5 is marked *Coming soon*. The AI Bible is intentionally out of scope.
 
 ## Run locally
 
@@ -38,7 +38,7 @@ The production deployment is connected to Vercel. The verified project domain is
 ## Pages
 
 - `/` — Home with a live spam-filter experiment
-- `/learn` — Course path with three available lessons and Episode 4 preview
+- `/learn` — Course path with four available lessons and Episode 5 preview
 - `/learn/[slug]` — Video, explanation, experiment, knowledge checks, completion state
 - `/playground` — Keyword spam filter and interactive next-token temperature simulation
 - `/about` — Creator story
@@ -55,4 +55,4 @@ Playful Editorial: off-white background, near-black typography, pastel pink and 
 
 ## Next milestones
 
-Expand Episodes 2–3 with their own topic-specific activities, validate usability on real phones, improve the feedback and progress experience, publish Episode 4 when its video is released, and commission original learning illustrations. No AI Bible features are included in this release.
+Expand Episodes 2–3 with their own topic-specific activities, validate usability on real phones, improve the feedback and progress experience, publish Episode 5 when its video is released, and commission original learning illustrations. No AI Bible features are included in this release.
