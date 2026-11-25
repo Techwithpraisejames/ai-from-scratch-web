@@ -22,5 +22,67 @@ tasks:["Describe the difference between training, inference, and evaluation in y
 {title:"How the model predicts the next token",paragraphs:["After processing a prompt, a language model produces a score for every token in its vocabulary. These raw scores are called logits. A mathematical function called softmax converts logits into a probability distribution, so each candidate has a probability and all candidates together sum to 100%.","Imagine a prompt ending with ‘The future of artificial intelligence is’. Many continuations are possible. The model's probabilities reflect patterns learned during training and the exact preceding context. The most probable candidate need not have a majority of the probability mass.","In the recorded SmolLM2-135M run, the five highest-ranked candidates were ‘a’ (5.68%), ‘not’ (4.39%), ‘uncertain’ (3.55%), ‘still’ (3.33%), and ‘to’ (3.08%). These five account for only part of the distribution. The model considers many more candidates than those displayed in the video."]},
 {title:"Greedy decoding, sampling, and temperature",paragraphs:["A probability distribution tells us how likely different next tokens are according to the model. A decoding strategy decides how to choose among them. Greedy decoding always selects the highest-scoring token at each step. For a fixed prompt and model under deterministic conditions, this tends to produce the same continuation.","Sampling draws a token according to a probability distribution instead of always choosing the top candidate. This allows multiple continuations from the same prompt. Temperature adjusts the distribution before sampling: lower temperatures concentrate probability on high-scoring tokens; higher temperatures make it more spread out. Temperature changes token selection, not the model's learned weights.","The video compares greedy decoding with sampling at temperature 0.8 using a pretrained model. You can explore a simplified temperature simulation in the playground. Its example scores are illustrative, not live outputs from SmolLM2."]},
 {title:"Why fluent AI-generated text can be wrong",paragraphs:["A language model is optimized to generate plausible token sequences according to its training and objectives. A confident-sounding sentence is not automatically a verified fact. A model may produce unsupported dates, invented sources, or inaccurate numerical claims.","In the recorded sampling example, the model generated a statement about jobs in 2030. That claim wasn't verified in the demonstration and should not be treated as evidence. Changing the sampling settings can change the words produced, but it cannot independently validate their truth.","The complete process is now easier to trace: prompt → token IDs → model logits → probabilities → token selection → repeat. The accompanying Python walkthrough uses HuggingFaceTB/SmolLM2-135M, AutoTokenizer, AutoModelForCausalLM, and PyTorch to make each stage visible."]}],
-tasks:["Explain how a prompt becomes token IDs and why token counts depend on the tokenizer.","Use the temperature playground to compare lower and higher temperature settings.","Run the SmolLM2-135M Python example. Change the prompt and inspect the top next-token candidates.","Compare greedy decoding and sampling. Identify one generated claim you would verify independently."],repo:"week-03-how-llms-work"}
+tasks:["Explain how a prompt becomes token IDs and why token counts depend on the tokenizer.","Use the temperature playground to compare lower and higher temperature settings.","Run the SmolLM2-135M Python example. Change the prompt and inspect the top next-token candidates.","Compare greedy decoding and sampling. Identify one generated claim you would verify independently."],repo:"week-03-how-llms-work"},
+4:{
+  "intro": "Prompt engineering is the practice of designing and testing instructions for AI models. If you are building an application with a language model, you need to define the task clearly enough that its output can be used by your software. In this chapter, you will learn the main prompting techniques, then apply them to a classification experiment with Python.",
+  "topics": [
+    {
+      "title": "What is prompt engineering?",
+      "paragraphs": [
+        "A prompt is the input and instructions supplied to a language model. The model uses this context to generate a response. Prompt engineering involves deciding what information to provide, how to express the task, and how to evaluate the result.",
+        "Consider a support ticket that says a customer was charged twice. Asking a model to classify it may produce a sentence explaining that it is a billing issue. An application that expects exactly the label Billing cannot necessarily use that sentence. Clear instructions define both the decision and the expected output."
+      ]
+    },
+    {
+      "title": "Anatomy of a useful prompt",
+      "paragraphs": [
+        "Start with the task, provide relevant context and input data, specify any rules or constraints, and describe the output format. For classification, define the allowed categories and what each category means.",
+        "When categories overlap, add a decision rule. A customer mentioning a paid plan may actually be reporting broken product behavior rather than a payment issue. A rule that explains which category takes priority gives the model a more precise task."
+      ]
+    },
+    {
+      "title": "Zero-shot, one-shot and few-shot prompting",
+      "paragraphs": [
+        "Zero-shot prompting gives the model a task without worked examples. A zero-shot prompt can still contain detailed category definitions, constraints and instructions. One-shot prompting provides one worked example; few-shot prompting supplies several.",
+        "For instance, an example pairing 'Please refund my payment' with Billing demonstrates the expected relationship between input and output. A second example pairing 'The dashboard crashes' with Technical Issue demonstrates another category. These examples become part of the context; they do not retrain the model or update its weights."
+      ]
+    },
+    {
+      "title": "Role prompting, explicit instructions and step-by-step tasks",
+      "paragraphs": [
+        "Role prompting establishes a perspective, such as asking the model to act as a support triage assistant. Explicit instructions specify the job and rules. These techniques can be combined with zero-shot or few-shot prompting.",
+        "For tasks with several decisions, break the work into stages: identify the main issue, then select the matching category. When an application requires a concise label, request that final output instead of a long explanation."
+      ]
+    },
+    {
+      "title": "Structured outputs and JSON schemas",
+      "paragraphs": [
+        "Natural-language instructions can request JSON, but a supported API can also enforce a structured output schema. A JSON schema describes the fields and allowed values in the response.",
+        "For the support classifier, an object with a required category field can restrict that field to Billing, Technical Issue, Account Access or Feature Request. A valid structure makes the response easier to parse. Whether the selected category is correct is a separate question."
+      ]
+    },
+    {
+      "title": "How to evaluate prompts with a dataset",
+      "paragraphs": [
+        "Define the expected answer for each test input and keep the model and evaluation dataset fixed when comparing configurations. Exact-match accuracy measures how often the returned category matches the expected label. Format compliance measures whether the response satisfies the expected structure.",
+        "Inspect individual failures as well as aggregate scores. A response that describes the correct topic but includes extra words may fail an exact-string comparison. Record latency and token usage to understand the operational trade-offs of longer prompts."
+      ]
+    },
+    {
+      "title": "Python experiment: four prompting approaches",
+      "paragraphs": [
+        "The accompanying video evaluates GPT-6 Luna on 50 labeled support tickets using the OpenAI API. Four configurations compare a basic prompt, structured zero-shot instructions, few-shot examples, and few-shot instructions with a strict JSON schema.",
+        "The basic prompt produced 0/50 exact matches; structured instructions achieved 49/50; few-shot and JSON schema each achieved 50/50. Format compliance was 0/50 for basic and 50/50 for each of the other approaches. Ticket T019, about a paid plan not appearing correctly in the dashboard, was classified as Billing by the structured prompt and Technical Issue by the few-shot prompt.",
+        "To reproduce the experiment, open the linked Python repository, install the dependencies, create a local .env using the provided example, and supply your own OpenAI API key. The complete run makes 200 API requests. Keep the key private. The video walks through the implementation and shows how to interpret the results."
+      ]
+    }
+  ],
+  "tasks": [
+    "Write a zero-shot prompt that defines four support categories and requires exactly one label.",
+    "Add two worked examples and explain what changes in the prompt context.",
+    "Run the Python evaluation with your own API key and inspect the results CSV.",
+    "Compare the output format and classification correctness for the four configurations."
+  ],
+  "repo": "week-04-prompt-engineering"
+}
 };
